@@ -1,0 +1,46 @@
+import requests
+from bs4 import BeautifulSoup
+
+print("WELCOME TO AN00NDARK")
+
+# 1. İlk olarak hedef siteyi çek
+get_url = "https://example.com"
+response = requests.get(get_url)
+print("GET request response:")
+print(response.text)
+
+# 2. Sayfa başlığını BeautifulSoup ile al
+soup = BeautifulSoup(response.text, "html.parser")
+print("PAGE TITLE:", soup.title.string)
+
+# 3. Login formuna sahte giriş denemesi yap
+print("\nLOGIN ATTEMPT...")
+
+# Login URL'si (değiştirilebilir)
+login_url = "https://example.com/login"
+
+# Kullanıcı adı ve şifre olarak aynı payload
+payload = "admin"
+
+# Form verisi
+data = {
+    "username": payload,
+    "password": payload
+}
+
+# POST isteği yolla
+login_response = requests.post(login_url, data=data)
+
+# Login sonrası cevabı incele
+login_soup = BeautifulSoup(login_response.text, "html.parser")
+
+# Gelen sayfa başlığı
+print("LOGIN PAGE TITLE:", login_soup.title.string)
+
+# Basit kontrol ile login olup olmadığını tahmin et
+if "invalid" in login_response.text.lower() or "error" in login_response.text.lower():
+    print("Login FAILED")
+else:
+    print("Login SUCCESS (belki)")
+
+# Daha fazla analiz veya geliştirme istersen ekleriz
